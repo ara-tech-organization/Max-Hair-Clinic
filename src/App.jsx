@@ -228,6 +228,7 @@ function Landing() {
   const [progress, setProgress] = useState(0)
   const [faq, setFaq] = useState(0)
   const [showTop, setShowTop] = useState(false)
+  const lock = useRef(NAV.some(([n]) => n === pathId()))
 
   // scroll progress + scroll-spy
   useEffect(() => {
@@ -250,17 +251,28 @@ function Landing() {
 
   useEffect(() => {
     const path = pathId()
-    const t = NAV.some(([n]) => n === path) ? setTimeout(() => document.getElementById(path)?.scrollIntoView(), 350) : null
+    window.history.scrollRestoration = 'manual'
+    window.scrollTo(0, 0)
+    const goTo = () => document.getElementById(path)?.scrollIntoView({ behavior: 'smooth' })
+    const known = NAV.some(([n]) => n === path)
+    const t1 = known ? setTimeout(goTo, 600) : null
+    const t2 = known ? setTimeout(() => {
+      const el = document.getElementById(path)
+      if (el && Math.abs(el.getBoundingClientRect().top - 84) > 120) goTo()
+    }, 1900) : null
+    const t3 = setTimeout(() => { lock.current = false }, 2300)
+    const t = { t1, t2, t3 }
     const pop = () => {
       const id = pathId()
       if (!id) window.scrollTo({ top: 0, behavior: 'smooth' })
       else document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
     }
     window.addEventListener('popstate', pop)
-    return () => { clearTimeout(t); window.removeEventListener('popstate', pop) }
+    return () => { clearTimeout(t.t1); clearTimeout(t.t2); clearTimeout(t.t3); window.removeEventListener('popstate', pop) }
   }, [])
 
   useEffect(() => {
+    if (lock.current) return
     const want = active ? `${BASE}${active}` : BASE
     if (window.location.pathname !== want) window.history.replaceState(null, '', want)
   }, [active])
