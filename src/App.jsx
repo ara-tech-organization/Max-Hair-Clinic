@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import './App.css'
 
+const BASE = import.meta.env.BASE_URL
+const pathId = () => {
+  const p = window.location.pathname
+  return (p.startsWith(BASE) ? p.slice(BASE.length) : p.slice(1)).replace(/\/$/, '')
+}
 const PHONE = '+91 90325 10000'
 const TEL = 'tel:+919032510000'
 const WA = 'https://wa.me/919032510000?text=Hi%20MAX%20Hair%20Clinic%2C%20I%20want%20to%20book%20a%20medical%20assessment'
@@ -244,10 +249,10 @@ function Landing() {
   }, [])
 
   useEffect(() => {
-    const path = window.location.pathname.replace(/^\/|\/$/g, '')
+    const path = pathId()
     const t = NAV.some(([n]) => n === path) ? setTimeout(() => document.getElementById(path)?.scrollIntoView(), 350) : null
     const pop = () => {
-      const id = window.location.pathname.replace(/^\/|\/$/g, '')
+      const id = pathId()
       if (!id) window.scrollTo({ top: 0, behavior: 'smooth' })
       else document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
     }
@@ -256,7 +261,7 @@ function Landing() {
   }, [])
 
   useEffect(() => {
-    const want = active ? `/${active}` : '/'
+    const want = active ? `${BASE}${active}` : BASE
     if (window.location.pathname !== want) window.history.replaceState(null, '', want)
   }, [active])
 
@@ -270,7 +275,7 @@ function Landing() {
   const go = (e, id) => {
     e.preventDefault()
     setOpen(false)
-    if (NAV.some(([n]) => n === id)) window.history.pushState(null, '', `/${id}`)
+    if (NAV.some(([n]) => n === id)) window.history.pushState(null, '', `${BASE}${id}`)
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   }
 
@@ -278,8 +283,8 @@ function Landing() {
     <>
       <header className="nav">
         <div className="container nav-inner">
-          <a href="#top" className="brand" onClick={(e) => { e.preventDefault(); window.history.pushState(null, '', '/'); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>
-            <img src="/logo.png" alt="MAX Hair Clinic" />
+          <a href="#top" className="brand" onClick={(e) => { e.preventDefault(); window.history.pushState(null, '', BASE); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>
+            <img src={`${BASE}logo.png`} alt="MAX Hair Clinic" />
           </a>
           <nav className={`nav-links ${open ? 'open' : ''}`} aria-label="Main">
             {NAV.map(([id, label]) => (
@@ -506,7 +511,7 @@ function Landing() {
 
       <footer className="footer">
         <div className="container">
-          <img src="/logo.png" alt="MAX Hair Clinic" />
+          <img src={`${BASE}logo.png`} alt="MAX Hair Clinic" />
           <p>Results might vary from case to case. *Awards and accreditations subject to verification.</p>
           <p><a href="#top">Privacy Policy</a> · <a href="#top">Terms</a> · <a href="#top">Cookie Policy</a></p>
           <p>© {new Date().getFullYear()} MAX Hair Clinic, Hyderabad</p>
@@ -548,7 +553,7 @@ function Internal() {
   }, [])
   return (
     <div className="internal container narrow">
-      <a href="/" className="btn btn-dark">← Back to landing page</a>
+      <a href={BASE} className="btn btn-dark">← Back to landing page</a>
       <h1>Internal notes (not part of the public page)</h1>
       <p><b>Before publishing:</b> Details (address, phone, doctors, accreditation, EMI, offer) are taken from the live page. Please re-verify them, especially the NABH and award claims and the 50% assessment offer, because Google Ads healthcare policy needs substantiation. Items in [BRACKETS] still need your input: offer terms and validity, NABH certificate number, finance partner names and documents, TOI citation, verbatim Google reviews, Hyderabad team photos.</p>
       <h2>14. Google Ads Copy (Responsive Search Ad)</h2>
@@ -573,5 +578,5 @@ export default function App() {
     window.addEventListener('hashchange', h)
     return () => window.removeEventListener('hashchange', h)
   }, [])
-  return (route === '#/internal' || window.location.pathname === '/internal') ? <Internal /> : <Landing />
+  return (route === '#/internal' || pathId() === 'internal') ? <Internal /> : <Landing />
 }
