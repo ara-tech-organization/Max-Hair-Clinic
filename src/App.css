@@ -386,3 +386,14 @@ h3{font-size:1.08rem;font-weight:600;margin-bottom:.45rem}
 .glow{display:none}
 .ba-show:before{display:none}
 .hero.dark .fine{margin-left:auto;margin-right:auto;text-align:center}
+
+/* footer alignment */
+.footer .container{display:flex;flex-direction:column;align-items:center;text-align:center}
+.footer p{margin:0 0 8px}
+.footer .fine{max-width:640px;margin:14px auto 0;text-align:center}
+
+/* options section: slate (same as journey) */
+#options{background:#2C3A45}
+#options .card{background:#34454F;border-color:#ffffff1f}
+#options .card:hover{border-color:var(--primary)}
+#options .card p{color:#EAEAEA}

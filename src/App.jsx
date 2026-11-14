@@ -356,7 +356,7 @@ function Landing() {
         </section>
 
         {/* OPTIONS */}
-        <section className="section" id="options">
+        <section className="section dark slate" id="options">
           <div className="container">
             <Reveal className="head"><span className="eyebrow">Explore Hair Transplant Options</span>
               <h2>Personalized Hair Restoration Solutions</h2>
