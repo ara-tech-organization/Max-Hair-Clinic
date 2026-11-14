@@ -107,6 +107,25 @@ function Reveal({ as: Tag = 'div', type = 'up', delay = 0, className = '', child
   return <Tag ref={ref} className={`reveal reveal-${type} ${seen ? 'is-in' : ''} ${className}`} style={{ '--d': `${delay}ms` }} {...rest}>{children}</Tag>
 }
 
+function DocTrack({ children, cls = "grid g4 doc-track" }) {
+  const ref = useRef(null)
+  const hold = useRef(false)
+  useEffect(() => {
+    const t = setInterval(() => {
+      const el = ref.current
+      if (!el || hold.current || el.scrollWidth <= el.clientWidth + 4) return
+      const first = el.children[0]
+      const stepW = first.offsetWidth + parseFloat(getComputedStyle(el).columnGap || 14)
+      const end = el.scrollLeft + el.clientWidth >= el.scrollWidth - 4
+      el.scrollTo({ left: end ? 0 : (Math.round(el.scrollLeft / stepW) + 1) * stepW, behavior: 'smooth' })
+    }, 2600)
+    return () => clearInterval(t)
+  }, [])
+  const pause = () => (hold.current = true)
+  const resume = () => setTimeout(() => (hold.current = false), 3500)
+  return <div className={cls} ref={ref} onTouchStart={pause} onTouchEnd={resume} onMouseEnter={pause} onMouseLeave={resume}>{children}</div>
+}
+
 function ResultsCarousel({ className = '', interval = 3800 }) {
   const ref = useRef(null)
   const hold = useRef(false)
@@ -433,7 +452,7 @@ function Landing() {
         <section className="section line" id="why">
           <div className="container">
             <Reveal className="head"><span className="eyebrow">Why MAX Hair Clinic?</span><h2>Your Hair Restoration Journey at MAX</h2></Reveal>
-            <div className="grid g3">
+            <div className="grid g3 stats-grid">
               {WHY.map(([n, t, d], i) => (
                 <Reveal key={t} delay={i * 100} className="card stat"><b>{n}</b><h3>{t}</h3><p>{d}</p></Reveal>
               ))}
@@ -449,14 +468,14 @@ function Landing() {
           <div className="container">
             <Reveal className="head"><span className="eyebrow">Real Patient Results</span><h2><span className="tone">Hair</span> Transplant <span className="tone">Results</span></h2>
               <p>Explore actual hair transplant results from patients treated at MAX Hair Clinic.</p></Reveal>
-            <div className="rg">
+            <DocTrack cls="rg rg-track">
               {RESULTS.map((src, n) => (
                 <Reveal as="figure" key={src} delay={(n % 4) * 90} className="rc-slide rg-card">
                   <figcaption><span className="b">Before</span><span className="a">After</span></figcaption>
                   <img loading="lazy" src={IMG + src} alt={`Hair transplant result ${n + 1}: before and after`} draggable="false" />
                 </Reveal>
               ))}
-            </div>
+            </DocTrack>
             <Reveal className="center"><p className="fine">Results vary based on individual hair loss, donor area, graft availability, and treatment plan.</p>
               <CTA>Book Your Hair Transplant Consultation</CTA></Reveal>
           </div>
@@ -467,14 +486,14 @@ function Landing() {
           <div className="container">
             <Reveal className="head"><span className="eyebrow">Meet Our Surgeons</span><h2>Experienced Hair Transplant Team</h2>
               <p>Meet the medical professionals involved in your hair restoration journey.</p></Reveal>
-            <div className="grid g4">
+            <DocTrack>
               {DOCTORS.map(([n, c, f], i) => (
                 <Reveal key={n} delay={i * 90} className="doc">
                   <div className="doc-photo"><img loading="lazy" src={`${BASE}doctors/${f}.webp`} alt={`${n}, ${c} – MAX Hair Clinic Hyderabad`} width="640" height="800" /></div>
                   <h3>{n}</h3><p>{c}</p>
                 </Reveal>
               ))}
-            </div>
+            </DocTrack>
             <Reveal className="center mt"><CTA>Book an Appointment</CTA></Reveal>
           </div>
         </section>
