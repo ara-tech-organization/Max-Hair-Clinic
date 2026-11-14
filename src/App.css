@@ -767,3 +767,56 @@ iframe,video{max-width:100%}
   .stats-grid .card h3{font-size:.98rem}
   .stats-grid .card p{font-size:.82rem}
 }
+
+/* ===== Why MAX stats – final responsive design =====
+   ≥1025: 3 cards | 641–1024: 3 compact cards | ≤640: compact horizontal rows */
+.stats-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;max-width:none;margin-inline:0}
+.stats-grid .card.stat{position:relative;overflow:hidden}
+.stats-grid .card.stat:before{content:"";position:absolute;left:0;top:0;width:100%;height:3px;background:linear-gradient(90deg,#FFBB3D,#FFE2A3);transform:scaleX(.25);transform-origin:left;transition:transform .5s var(--ease)}
+.stats-grid .card.stat:hover:before{transform:scaleX(1)}
+@media (max-width:640px){
+  .stats-grid{grid-template-columns:1fr;gap:12px;max-width:none}
+  .stats-grid .card.stat{display:grid;grid-template-columns:104px 1fr;grid-template-areas:"n t" "n d";column-gap:16px;align-items:center;padding:16px 18px;border-radius:18px}
+  .stats-grid .card.stat:before{width:3px;height:100%;transform:scaleY(1);background:#FFBB3D}
+  .stats-grid .stat b{grid-area:n;font-size:1.55rem;line-height:1.1;margin:0;padding-right:14px;border-right:1px solid var(--line);white-space:nowrap}
+  .stats-grid .stat h3{grid-area:t;margin:0;font-size:.98rem}
+  .stats-grid .stat p{grid-area:d;font-size:.82rem;line-height:1.5}
+}
+@media (max-width:359px){
+  .stats-grid .card.stat{grid-template-columns:88px 1fr;column-gap:12px;padding:14px}
+  .stats-grid .stat b{font-size:1.3rem}
+}
+
+
+
+/* ===== stats: highlighted design (gold pill numbers, featured middle card) ===== */
+.stats-grid .card.stat{background:linear-gradient(160deg,#FFF8E4 0%,#fff 62%);border:1.5px solid #F6DFA6;box-shadow:0 18px 36px -22px #B97A0066;border-top:4px solid #FFBB3D}
+.stats-grid .card.stat:before{display:none}
+.stats-grid .card.stat:hover{border-color:#FFBB3D;transform:translateY(-5px)!important;box-shadow:0 24px 44px -20px #B97A0080}
+.stats-grid .stat b{display:inline-block;width:fit-content;background:linear-gradient(120deg,#FFCB66,#FFBB3D 60%,#F0A91F);color:#1A1A1A;padding:6px 18px;border-radius:999px;font-size:1.35rem;line-height:1.3;margin:0 0 14px;box-shadow:0 8px 18px -8px #E8A317}
+.stats-grid .card.stat:nth-child(2){background:#1A1A1A;border-color:#1A1A1A;border-top-color:#FFBB3D}
+.stats-grid .card.stat:nth-child(2) h3{color:#fff}
+.stats-grid .card.stat:nth-child(2) p{color:#d6d6d6}
+@media (min-width:641px) and (max-width:1024px){.stats-grid .stat b{font-size:1.15rem;padding:5px 14px}}
+@media (max-width:640px){
+  .stats-grid .card.stat{border-top:1.5px solid #F6DFA6;border-left:4px solid #FFBB3D;grid-template-columns:auto 1fr;column-gap:16px;padding:16px 18px}
+  .stats-grid .card.stat:nth-child(2){border-color:#1A1A1A;border-left-color:#FFBB3D}
+  .stats-grid .stat b{grid-area:n;align-self:center;font-size:1.05rem;padding:7px 14px;margin:0;border:0;min-width:92px;text-align:center}
+}
+@media (max-width:359px){.stats-grid .stat b{min-width:78px;font-size:.95rem;padding:6px 10px}}
+
+/* ===== stats – phone redesign: uniform rows, fixed gold badge column ===== */
+@media (max-width:640px){
+  .stats-grid{gap:14px}
+  .stats-grid .card.stat,.stats-grid .card.stat:nth-child(2){background:#fff;border:1px solid #F1E6C8;border-left:1px solid #F1E6C8;border-top:1px solid #F1E6C8;border-radius:20px;box-shadow:0 14px 28px -20px #1A1A1A59;grid-template-columns:96px 1fr;grid-template-areas:"n t" "n d";column-gap:16px;row-gap:2px;align-items:center;padding:14px 16px 14px 14px;overflow:hidden}
+  .stats-grid .card.stat:nth-child(2) h3{color:var(--ink)}
+  .stats-grid .card.stat:nth-child(2) p{color:var(--text)}
+  .stats-grid .stat b{grid-area:n;display:grid;place-items:center;width:96px;height:80px;min-width:0;padding:0;border-radius:16px;font-size:1.2rem;line-height:1;text-align:center;background:linear-gradient(150deg,#FFD27A,#FFBB3D 55%,#EFA51A);box-shadow:inset 0 0 0 1px #ffffff66,0 10px 18px -12px #B97A00}
+  .stats-grid .card.stat:nth-child(2) b{background:#1A1A1A;color:#FFBB3D;box-shadow:0 10px 18px -12px #000}
+  .stats-grid .stat h3{grid-area:t;align-self:end;margin:0;font-size:1rem}
+  .stats-grid .stat p{grid-area:d;align-self:start;margin:0;font-size:.84rem;line-height:1.45}
+}
+@media (max-width:359px){
+  .stats-grid .card.stat,.stats-grid .card.stat:nth-child(2){grid-template-columns:76px 1fr;column-gap:12px;padding:12px}
+  .stats-grid .stat b{width:76px;height:68px;font-size:1rem}
+}
