@@ -380,3 +380,9 @@ h3{font-size:1.08rem;font-weight:600;margin-bottom:.45rem}
 /* booking section: white background, Options below is cream */
 .book{background:#fff;padding:64px 0 72px}
 .book-card{border:1px solid #ece6da;box-shadow:0 24px 60px -30px #1712082e}
+
+/* hero: solid black */
+.hero.dark{background:#1A1A1A}
+.glow{display:none}
+.ba-show:before{display:none}
+.hero.dark .fine{margin-left:auto;margin-right:auto;text-align:center}
