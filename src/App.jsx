@@ -13,8 +13,8 @@ const MAP = 'https://www.google.com/maps/search/?api=1&query=MAX+Hair+Clinic+Roa
 const IMG = 'https://mymaxhair.com/wp-content/uploads/'
 
 const NAV = [
-  ['options', 'Options'], ['compare', 'Compare'], ['why', 'Why Us'],
-  ['journey', 'Journey'], ['faqs', 'FAQs'], ['contact', 'Contact'],
+  ['options', 'Options'], ['journey', 'Journey'], ['compare', 'Compare'],
+  ['why', 'Why Us'], ['faqs', 'FAQs'], ['contact', 'Contact'],
 ]
 
 const OPTIONS = [
@@ -48,6 +48,8 @@ const WHY = [
 const WHY_LIST = ['Surgeon-Led Treatment Planning', 'Multiple Hair Restoration Options Under One Roof', 'Personalized Hair Transplant Assessment']
 
 const RESULTS = [
+  '2026/10/max-hair-clinic-male-pattern-baldness-treatment-hydrabad.webp',
+  '2026/10/max-hair-clinic-hairline-restoration-results-hydrabad.webp',
   '2026/10/max-hair-clinic-hair-transplant-hairline-results-hydrabad.webp',
   '2026/10/max-hair-clinic-crown-hair-growth-before-after-hydrabad.webp',
   '2026/10/max-hair-clinic-hair-regrowth-before-after-hydrabad.webp',
@@ -105,7 +107,7 @@ function Reveal({ as: Tag = 'div', type = 'up', delay = 0, className = '', child
   return <Tag ref={ref} className={`reveal reveal-${type} ${seen ? 'is-in' : ''} ${className}`} style={{ '--d': `${delay}ms` }} {...rest}>{children}</Tag>
 }
 
-function ResultsCarousel({ className = '' }) {
+function ResultsCarousel({ className = '', interval = 3800 }) {
   const ref = useRef(null)
   const hold = useRef(false)
   const [i, setI] = useState(0)
@@ -122,9 +124,9 @@ function ResultsCarousel({ className = '' }) {
       if (!el || hold.current) return
       const end = el.scrollLeft + el.clientWidth >= el.scrollWidth - 4
       go(end ? 0 : Math.round(el.scrollLeft / step()) + 1)
-    }, 3800)
+    }, interval)
     return () => clearInterval(t)
-  }, [])
+  }, [interval])
   return (
     <div className={`rc ${className}`} onMouseEnter={() => (hold.current = true)} onMouseLeave={() => (hold.current = false)} onTouchStart={() => (hold.current = true)} onTouchEnd={() => setTimeout(() => (hold.current = false), 4000)}>
       <div className="rc-track" ref={ref} onScroll={onScroll}>
@@ -355,7 +357,7 @@ function Landing() {
               </div>
             </div>
             <div className="ba-show hero-in" style={{ '--i': 3 }}>
-              <ResultsCarousel className="rc-hero" />
+              <ResultsCarousel className="rc-hero" interval={2000} />
             </div>
           </div>
           <p className="container fine hero-in" style={{ '--i': 6 }}>Results vary based on individual hair loss, donor area, graft availability, and treatment plan.</p>
@@ -378,6 +380,19 @@ function Landing() {
               ))}
             </div>
             <Reveal className="center mt"><CTA className="btn-dark btn-lg">Book a Hair Transplant Consultation</CTA></Reveal>
+          </div>
+        </section>
+
+        {/* JOURNEY */}
+        <section className="section" id="journey">
+          <div className="container">
+            <Reveal className="head"><span className="eyebrow">Your Hair Transplant Journey</span><h2>What to Expect</h2></Reveal>
+            <ol className="steps">
+              {JOURNEY.map(([t, d], i) => (
+                <Reveal as="li" key={t} delay={i * 90}><span className="step-n">0{i + 1}</span><h3>{t}</h3><p>{d}</p></Reveal>
+              ))}
+            </ol>
+            <Reveal className="center mt"><CTA>Schedule Your Hair Assessment</CTA></Reveal>
           </div>
         </section>
 
@@ -436,7 +451,7 @@ function Landing() {
               <p>Explore actual hair transplant results from patients treated at MAX Hair Clinic.</p></Reveal>
             <div className="rg">
               {RESULTS.map((src, n) => (
-                <Reveal as="figure" key={src} delay={(n % 3) * 90} className="rc-slide rg-card">
+                <Reveal as="figure" key={src} delay={(n % 4) * 90} className="rc-slide rg-card">
                   <figcaption><span className="b">Before</span><span className="a">After</span></figcaption>
                   <img loading="lazy" src={IMG + src} alt={`Hair transplant result ${n + 1}: before and after`} draggable="false" />
                 </Reveal>
@@ -464,19 +479,6 @@ function Landing() {
           </div>
         </section>
 
-        {/* JOURNEY */}
-        <section className="section dark slate" id="journey">
-          <div className="container">
-            <Reveal className="head"><span className="eyebrow">Your Hair Transplant Journey</span><h2>What to Expect</h2></Reveal>
-            <ol className="steps">
-              {JOURNEY.map(([t, d], i) => (
-                <Reveal as="li" key={t} delay={i * 90}><span className="step-n">0{i + 1}</span><h3>{t}</h3><p>{d}</p></Reveal>
-              ))}
-            </ol>
-            <Reveal className="center mt"><CTA>Schedule Your Hair Assessment</CTA></Reveal>
-          </div>
-        </section>
-
         {/* FAQ */}
         <section className="section line" id="faqs">
           <div className="container narrow">
@@ -491,7 +493,7 @@ function Landing() {
         </section>
 
         {/* FINAL / CONTACT */}
-        <section className="section line" id="contact">
+        <section className="section dark slate" id="contact">
           <div className="container split">
             <Reveal>
               <span className="eyebrow">Final Appointment</span>

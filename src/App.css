@@ -462,3 +462,26 @@ h3{font-size:1.08rem;font-weight:600;margin-bottom:.45rem}
 .doc-photo img{width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform .8s var(--ease)}
 .doc:hover .doc-photo img{transform:scale(1.05)}
 .doc h3,.doc p{padding:0 16px}
+
+/* ---- 8-card results grid: 4 across ---- */
+.rg{grid-template-columns:repeat(4,1fr);gap:22px}
+.rg-card figcaption span{font-size:.8rem;padding:13px 0}
+.rg-card img{aspect-ratio:850/780}
+@media (max-width:1100px){.rg{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:640px){.rg{grid-template-columns:1fr}}
+
+/* options + journey are both slate: thin divider between */
+#journey{border-top:1px solid #ffffff1f}
+
+/* ---- alternating section backgrounds ----
+ hero black | book white | options slate | journey white | compare cream |
+ sapphire black | why white | results cream | surgeons white | faqs cream |
+ contact slate | footer black */
+.section.line{border-top:0}
+#journey{border-top:0;background:#fff}
+#compare,#results,#faqs{background:#FDF9EF}
+#compare .cmp{background:#fff}
+#faqs .faq{border-bottom-color:#ece6da}
+#contact .contact li,#contact .contact li:first-child,#contact .contact li:not(:first-child){border-bottom-color:#ffffff1f}
+#contact .contact a:hover{color:var(--primary)}
+#contact .map{border-color:#ffffff1f}
