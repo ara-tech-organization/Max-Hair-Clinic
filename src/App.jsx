@@ -48,18 +48,19 @@ const WHY = [
 const WHY_LIST = ['Surgeon-Led Treatment Planning', 'Multiple Hair Restoration Options Under One Roof', 'Personalized Hair Transplant Assessment']
 
 const RESULTS = [
-  ['2026/10/max-hair-clinic-hair-transplant-hairline-results-hydrabad.webp', 'Hairline restoration'],
-  ['2026/10/max-hair-clinic-crown-hair-growth-before-after-hydrabad.webp', 'Crown restoration'],
-  ['2026/10/max-hair-clinic-hair-regrowth-before-after-hydrabad.webp', 'Hair density improvement'],
-  ['2026/10/max-hair-clinic-baldness-treatment-before-after-hydrabad.webp', 'Different hair loss patterns'],
+  '2026/10/max-hair-clinic-hair-transplant-hairline-results-hydrabad.webp',
+  '2026/10/max-hair-clinic-crown-hair-growth-before-after-hydrabad.webp',
+  '2026/10/max-hair-clinic-hair-regrowth-before-after-hydrabad.webp',
+  '2026/10/max-hair-clinic-baldness-treatment-before-after-hydrabad.webp',
+  '2026/10/max-hair-clinic-hair-transplant-before-after-hydrabad.webp',
+  '2026/10/max-hair-clinic-hair-thinning-treatment-results-hydrabad.webp',
 ]
-const HERO_BA = '2026/10/max-hair-clinic-hair-transplant-before-after-hydrabad.webp'
 
 const DOCTORS = [
-  ['Dr. Tajaly Saneen', 'MBBS, MS, DrNB – Plastic & Reconstructive Surgery'],
-  ['Dr. Hiba Fayaz', 'Consultant'],
-  ['Dr. K. R. G. Aravind Kumar', 'Oral & Maxillofacial Surgeon'],
-  ['Dr. Aswini Teja', 'Consultant'],
+  ['Dr. Tajaly Saneen', 'MBBS, MS, DrNB – Plastic & Reconstructive Surgery', 'tajaly-saneen'],
+  ['Dr. Hiba Fayaz', 'Consultant', 'hiba-fayaz'],
+  ['Dr. K. R. G. Aravind Kumar', 'Oral & Maxillofacial Surgeon', 'aravind-kumar'],
+  ['Dr. Aswini Teja', 'Consultant', 'aswini-teja'],
 ]
 
 const JOURNEY = [
@@ -104,27 +105,40 @@ function Reveal({ as: Tag = 'div', type = 'up', delay = 0, className = '', child
   return <Tag ref={ref} className={`reveal reveal-${type} ${seen ? 'is-in' : ''} ${className}`} style={{ '--d': `${delay}ms` }} {...rest}>{children}</Tag>
 }
 
-function BeforeAfter({ src, alt, className = '' }) {
-  const [pos, setPos] = useState(50)
+function ResultsCarousel({ className = '' }) {
   const ref = useRef(null)
-  const move = (e) => {
-    const r = ref.current.getBoundingClientRect()
-    setPos(Math.min(100, Math.max(0, ((e.clientX - r.left) / r.width) * 100)))
+  const hold = useRef(false)
+  const [i, setI] = useState(0)
+  const step = () => {
+    const el = ref.current
+    const c = el && el.children[0]
+    return c ? c.offsetWidth + parseFloat(getComputedStyle(el).columnGap || 20) : 1
   }
-  const down = (e) => { e.currentTarget.setPointerCapture(e.pointerId); move(e) }
-  const key = (e) => {
-    if (e.key === 'ArrowLeft') setPos((p) => Math.max(0, p - 5))
-    if (e.key === 'ArrowRight') setPos((p) => Math.min(100, p + 5))
-  }
+  const go = (n) => ref.current && ref.current.scrollTo({ left: n * step(), behavior: 'smooth' })
+  const onScroll = () => setI(Math.round(ref.current.scrollLeft / step()))
+  useEffect(() => {
+    const t = setInterval(() => {
+      const el = ref.current
+      if (!el || hold.current) return
+      const end = el.scrollLeft + el.clientWidth >= el.scrollWidth - 4
+      go(end ? 0 : Math.round(el.scrollLeft / step()) + 1)
+    }, 3800)
+    return () => clearInterval(t)
+  }, [])
   return (
-    <div className={`bas ${className}`} ref={ref} onPointerDown={down} onPointerMove={(e) => e.buttons && move(e)}>
-      <img className="bas-b" src={IMG + src} alt={`${alt} – before`} draggable="false" />
-      <img className="bas-a" src={IMG + src} alt={`${alt} – after`} draggable="false" style={{ clipPath: `inset(0 0 0 ${pos}%)` }} />
-      <span className="bas-tag l">Before</span><span className="bas-tag r">After</span>
-      <div className="bas-line" style={{ left: `${pos}%` }}>
-        <button type="button" role="slider" aria-label="Before and after slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow={Math.round(pos)} onKeyDown={key}>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m8 7-5 5 5 5M16 7l5 5-5 5" /></svg>
-        </button>
+    <div className={`rc ${className}`} onMouseEnter={() => (hold.current = true)} onMouseLeave={() => (hold.current = false)} onTouchStart={() => (hold.current = true)} onTouchEnd={() => setTimeout(() => (hold.current = false), 4000)}>
+      <div className="rc-track" ref={ref} onScroll={onScroll}>
+        {RESULTS.map((src, n) => (
+          <figure className="rc-slide" key={src}>
+            <figcaption><span className="b">Before</span><span className="a">After</span></figcaption>
+            <img loading="lazy" src={IMG + src} alt={`Hair transplant result ${n + 1}: before and after`} draggable="false" />
+          </figure>
+        ))}
+      </div>
+      <div className="rc-dots" role="tablist" aria-label="Results">
+        {RESULTS.map((_, n) => (
+          <button key={n} type="button" role="tab" aria-selected={i === n} aria-label={`Result ${n + 1}`} className={i === n ? 'on' : ''} onClick={() => go(n)} />
+        ))}
       </div>
     </div>
   )
@@ -341,10 +355,7 @@ function Landing() {
               </div>
             </div>
             <div className="ba-show hero-in" style={{ '--i': 3 }}>
-              <span className="ba-ghost" />
-              <BeforeAfter src={HERO_BA} alt="Hair transplant result" className="ba" />
-              <span className="ba-stamp">Before <i>·</i> After</span>
-              <span className="ba-scan" />
+              <ResultsCarousel className="rc-hero" />
             </div>
           </div>
           <p className="container fine hero-in" style={{ '--i': 6 }}>Results vary based on individual hair loss, donor area, graft availability, and treatment plan.</p>
@@ -421,11 +432,14 @@ function Landing() {
         {/* RESULTS */}
         <section className="section line" id="results">
           <div className="container">
-            <Reveal className="head"><span className="eyebrow">Real Patient Results</span><h2>Hair Transplant Results</h2>
+            <Reveal className="head"><span className="eyebrow">Real Patient Results</span><h2><span className="tone">Hair</span> Transplant <span className="tone">Results</span></h2>
               <p>Explore actual hair transplant results from patients treated at MAX Hair Clinic.</p></Reveal>
-            <div className="grid g4 gallery">
-              {RESULTS.map(([src, tag], i) => (
-                <Reveal key={src} type="scale" delay={i * 90}><BeforeAfter src={src} alt={tag} /><p className="shot-cap">{tag}</p></Reveal>
+            <div className="rg">
+              {RESULTS.map((src, n) => (
+                <Reveal as="figure" key={src} delay={(n % 3) * 90} className="rc-slide rg-card">
+                  <figcaption><span className="b">Before</span><span className="a">After</span></figcaption>
+                  <img loading="lazy" src={IMG + src} alt={`Hair transplant result ${n + 1}: before and after`} draggable="false" />
+                </Reveal>
               ))}
             </div>
             <Reveal className="center"><p className="fine">Results vary based on individual hair loss, donor area, graft availability, and treatment plan.</p>
@@ -439,9 +453,9 @@ function Landing() {
             <Reveal className="head"><span className="eyebrow">Meet Our Surgeons</span><h2>Experienced Hair Transplant Team</h2>
               <p>Meet the medical professionals involved in your hair restoration journey.</p></Reveal>
             <div className="grid g4">
-              {DOCTORS.map(([n, c], i) => (
+              {DOCTORS.map(([n, c, f], i) => (
                 <Reveal key={n} delay={i * 90} className="doc">
-                  <div className="avatar">{n.replace('Dr. ', '').split(' ').filter((w) => w.length > 2).slice(0, 2).map((w) => w[0]).join('')}</div>
+                  <div className="doc-photo"><img loading="lazy" src={`${BASE}doctors/${f}.webp`} alt={`${n}, ${c} – MAX Hair Clinic Hyderabad`} width="640" height="800" /></div>
                   <h3>{n}</h3><p>{c}</p>
                 </Reveal>
               ))}
