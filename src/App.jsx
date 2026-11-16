@@ -417,16 +417,19 @@ function Landing() {
 
         {/* COMPARE */}
         <section className="section line" id="compare">
-          <div className="container narrow">
+          <div className="container">
             <Reveal className="head"><span className="eyebrow">Sapphire FUE vs Conventional FUE</span>
-              <h2>Understanding Sapphire FUE Hair Transplant</h2>
+              <h2>Understanding the Difference Between<br className="br-d" /> Sapphire FUE and Conventional FUE</h2>
               <p>Both techniques involve follicular unit extraction. The primary difference highlighted here is the blade material used during recipient channel creation.</p></Reveal>
+            <div className="cmp-wrap">
+              <Reveal className="cmp-img"><img loading="lazy" src={IMG + '2026/08/sapphire-ht-1024x437.webp'} alt="Surgeon creating recipient channels with a sapphire blade during a hair transplant" width="1024" height="437" /></Reveal>
             <Reveal className="cmp">
-              <div className="cmp-row cmp-top"><span /><b>Sapphire FUE</b><b>Conventional FUE</b></div>
-              {COMPARE.map(([k, a, b]) => (
-                <div className="cmp-row" key={k}><span className="k">{k}</span><span>{a}</span><span>{b}</span></div>
-              ))}
-            </Reveal>
+                <div className="cmp-row cmp-top"><span /><b>Sapphire FUE</b><b>Conventional FUE</b></div>
+                {COMPARE.map(([k, a, b]) => (
+                  <div className="cmp-row" key={k}><span className="k">{k}</span><span>{a}</span><span>{b}</span></div>
+                ))}
+              </Reveal>
+            </div>
             <Reveal className="center mt"><p className="fine">The suitability of each technique depends on your hair loss pattern, donor area, and treatment requirements.</p>
               <CTA className="btn-dark btn-lg">Discuss Your Hair Transplant Options</CTA></Reveal>
           </div>
