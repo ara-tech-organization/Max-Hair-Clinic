@@ -14,7 +14,7 @@ const IMG = 'https://mymaxhair.com/wp-content/uploads/'
 
 const NAV = [
   ['options', 'Options'], ['journey', 'Journey'], ['compare', 'Compare'],
-  ['why', 'Why Us'], ['faqs', 'FAQs'], ['contact', 'Contact'],
+  ['faqs', 'FAQs'], ['contact', 'Contact'],
 ]
 
 const OPTIONS = [
@@ -45,6 +45,7 @@ const WHY = [
   ['NABH', 'Accredited Hair Clinic', "India's first NABH accredited hair clinic"],
   ['5 Lakh+', 'Clients Served', 'Across every stage of hair loss'],
 ]
+
 const WHY_LIST = ['Surgeon-Led Treatment Planning', 'Multiple Hair Restoration Options Under One Roof', 'Personalized Hair Transplant Assessment']
 
 const RESULTS = [
@@ -264,6 +265,7 @@ function BookingForm() {
       </div>
       <button className="btn btn-primary btn-lg book-btn" disabled={busy}>{busy ? 'Sending…' : 'Book My Appointment'}</button>
       <small className="micro"><Icon d="M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4" size={14} /> 100% confidential. No obligation.</small>
+      <ul className="book-trust"><li><Icon d={CHECK_D} size={13} /> NABH accredited</li><li><Icon d={CHECK_D} size={13} /> Surgeon-led</li><li><Icon d={CHECK_D} size={13} /> Free assessment call</li></ul>
     </form>
   )
 }
@@ -384,7 +386,19 @@ function Landing() {
 
         {/* BOOKING */}
         <section className="book" id="book">
-          <div className="container"><Reveal><BookingForm /></Reveal></div>
+          <div className="container book-split">
+            <div className="book-why">
+              <Reveal><span className="eyebrow">Why MAX Hair Clinic?</span><h2>Your Hair Restoration Journey at MAX</h2>
+                <p className="note-l">At MAX Hair Clinic, your hair restoration journey begins with understanding your hair loss and identifying suitable treatment options.</p></Reveal>
+              <div className="why-rows">
+                {WHY.map(([n, t, d], i) => (
+                  <Reveal key={t} delay={i * 90} className="why-row"><b>{n}</b><div><h3>{t}</h3><p>{d}</p></div></Reveal>
+                ))}
+              </div>
+              <Reveal className="why-tags">{WHY_LIST.map((x) => <span key={x}><Icon d={CHECK_D} size={14} />{x}</span>)}</Reveal>
+            </div>
+            <Reveal><BookingForm /></Reveal>
+          </div>
         </section>
 
         {/* OPTIONS */}
@@ -448,21 +462,6 @@ function Landing() {
             <Reveal delay={150}>
               <ul className="ticks">{SAPPHIRE.map((c) => <li key={c}><span className="ck"><Icon d={CHECK_D} size={14} /></span>{c}</li>)}</ul>
             </Reveal>
-          </div>
-        </section>
-
-        {/* WHY */}
-        <section className="section line" id="why">
-          <div className="container">
-            <Reveal className="head"><span className="eyebrow">Why MAX Hair Clinic?</span><h2>Your Hair Restoration Journey at MAX</h2></Reveal>
-            <div className="grid g3 stats-grid">
-              {WHY.map(([n, t, d], i) => (
-                <Reveal key={t} delay={i * 100} className="card stat"><b>{n}</b><h3>{t}</h3><p>{d}</p></Reveal>
-              ))}
-            </div>
-            <Reveal className="chiprow">{WHY_LIST.map((x) => <span key={x}><Icon d={CHECK_D} size={14} />{x}</span>)}</Reveal>
-            <Reveal className="center"><p className="note">At MAX Hair Clinic, your hair restoration journey begins with understanding your hair loss and identifying suitable treatment options.</p>
-              <CTA>Schedule Your Appointment</CTA></Reveal>
           </div>
         </section>
 

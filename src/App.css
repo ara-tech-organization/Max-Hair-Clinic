@@ -846,3 +846,86 @@ iframe,video{max-width:100%}
 #compare .head{max-width:900px}
 #compare .head h2{font-size:clamp(1.35rem,3.2vw,2.2rem);text-wrap:balance}
 @media (max-width:640px){.br-d{display:none}}
+
+/* ===== booking: Why MAX (left) + form (right) ===== */
+.book .container.book-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,480px);gap:clamp(28px,5vw,64px);align-items:center;justify-content:stretch}
+.book-split .book-card{width:100%}
+.book-why h2{font-size:clamp(1.5rem,3vw,2.2rem);margin-bottom:.8rem}
+.note-l{max-width:52ch;margin-bottom:1.4rem}
+.why-rows{display:grid;gap:12px}
+.why-row{display:grid;grid-template-columns:96px 1fr;gap:16px;align-items:center;padding:12px 16px 12px 12px;background:#fff;border:1px solid #F1E6C8;border-radius:18px;box-shadow:0 14px 28px -22px #1A1A1A59}
+.why-row b{display:grid;place-items:center;height:64px;border-radius:14px;background:linear-gradient(150deg,#FFD27A,#FFBB3D 55%,#EFA51A);color:#1A1A1A;font-size:1.05rem;font-weight:600;text-align:center}
+.why-row:nth-child(2) b{background:#1A1A1A;color:#FFBB3D}
+.why-row h3{margin:0 0 2px;font-size:1rem}
+.why-row p{margin:0;font-size:.85rem;line-height:1.5}
+.why-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.why-tags span{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:6px 13px;background:#fff}
+.why-tags svg{color:var(--gold-ink)}
+@media (max-width:900px){.book .container.book-split{grid-template-columns:1fr;gap:32px}.book-split .book-card{width:min(720px,100%);margin:0 auto}}
+@media (min-width:641px) and (max-width:900px){.why-rows{grid-template-columns:repeat(3,1fr)}.why-row{grid-template-columns:1fr;text-align:center;padding:14px}}
+@media (max-width:479px){.why-row{grid-template-columns:78px 1fr}.why-row b{height:56px;font-size:.92rem}}
+
+/* booking split: equal columns, nothing overflowing */
+.book .container.book-split{grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(24px,3.5vw,48px);align-items:stretch}
+.book-split>*{min-width:0}
+.book-why{display:flex;flex-direction:column;justify-content:center}
+.book-split .book-card{width:100%;height:100%;padding:clamp(22px,2.6vw,36px);align-content:center}
+.book-split .book-fields{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.book-split .book-card label,.book-split .book-card .field,.book-split .inp,.book-split .dd{min-width:0}
+.book-split .inp input,.book-split .dd-btn{width:100%;min-width:0}
+.book-split .book-head h2{font-size:clamp(1.35rem,2.2vw,1.85rem)}
+.book-split .why-row{grid-template-columns:96px minmax(0,1fr)}
+@media (max-width:900px){
+  .book .container.book-split{grid-template-columns:minmax(0,1fr)}
+  .book-split .book-card{height:auto;max-width:720px;margin:0 auto}
+}
+@media (max-width:560px){.book-split .book-fields{grid-template-columns:minmax(0,1fr)}}
+
+/* booking form card: hug content, even top/bottom spacing */
+.book .container.book-split{align-items:center}
+.book-split .book-card{height:auto;align-self:center;align-content:start;padding:36px clamp(22px,2.6vw,36px)}
+.book-split .book-head h2{margin-bottom:.4rem}
+.book-split .pill-tag{margin-bottom:12px}
+@media (max-width:560px){.book-split .book-card{padding:26px 18px}}
+
+/* ===== BOOKING FORM – redesign: dark header panel + clean white body ===== */
+.book-card,.book-split .book-card{padding:0;gap:0;overflow:hidden;border-radius:26px;border:1px solid #e9e1cf;background:#fff;box-shadow:0 34px 70px -36px #1A1A1A8c;align-content:start}
+.book-card .book-head{position:relative;background:#1A1A1A;padding:30px clamp(22px,3vw,36px) 54px}
+.book-card .book-head:after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:linear-gradient(90deg,#E8A317,#FFBB3D,#FFE2A3)}
+.book-card .pill-tag{background:#ffffff14;border:1px solid #FFBB3D59;color:#FFCB66;margin-bottom:14px}
+.book-card .pill-tag svg{color:#FFBB3D}
+.book-card .book-head h2,.book-split .book-card .book-head h2{color:#fff;font-size:clamp(1.35rem,2.2vw,1.8rem);margin:0 0 .5rem}
+.book-card .book-head .gold{color:#FFBB3D}
+.book-card .book-head p{color:#ffffffb8;font-size:.9rem;margin:0}
+.book-card .book-fields{position:relative;margin:-30px clamp(16px,2.4vw,28px) 0;padding:22px clamp(16px,2vw,24px) 22px;background:#fff;border:1px solid #efe7d4;border-radius:20px;box-shadow:0 18px 36px -24px #1A1A1A59;gap:16px 16px}
+.book-card .book-fields label,.book-card .book-fields .field{color:#6a604a;font-size:.68rem;letter-spacing:.09em}
+.book-card .inp input,.book-card .inp .dd-btn{height:52px;background:#fff;border:1.5px solid #e8e0cc;border-radius:12px;padding-left:52px;transition:border-color .25s,box-shadow .25s,background .25s}
+.book-card .inp input.has-pre{padding-left:96px}
+.book-card .inp>svg{left:10px;top:26px;width:32px;height:32px;padding:7px;border-radius:9px;background:#FFF4D6;color:#B97A00;box-sizing:border-box}
+.book-card .inp em{left:52px;top:26px;border-right:1px solid #e8e0cc}
+.book-card .inp input:hover,.book-card .inp .dd-btn:hover{border-color:#FFBB3D}
+.book-card .inp input:focus,.book-card .inp .dd.open .dd-btn{background:#fffdf7;border-color:#FFBB3D;box-shadow:0 0 0 4px #FFBB3D33}
+.book-card .inp:focus-within>svg{background:#FFBB3D;color:#1A1A1A}
+.book-card .book-btn{margin:20px clamp(16px,2.4vw,28px) 0;width:auto;min-height:56px;font-size:1rem;font-weight:600;box-shadow:0 16px 28px -14px #E8A317}
+.book-card .book-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 20px 32px -14px #E8A317}
+.book-card .micro{margin:14px 0 0}
+.book-trust{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;margin:12px clamp(16px,2.4vw,28px) 0;padding:14px 0 22px;border-top:1px solid #f0e9d8;font-size:.74rem;color:#6a604a}
+.book-trust li{display:inline-flex;align-items:center;gap:6px}
+.book-trust svg{color:#B97A00}
+.book-card.sent,.book-split .book-card.sent{padding:56px 28px;gap:12px}
+@media (max-width:560px){
+  .book-card .book-head{padding:24px 18px 50px}
+  .book-card .book-fields{margin-inline:12px;padding:18px 14px}
+  .book-card .book-btn,.book-trust{margin-inline:12px}
+}
+
+/* form layout: name full | mobile + date | treatment full; dropdown never clipped */
+.book-card,.book-split .book-card{overflow:visible}
+.book-card .book-head{border-radius:25px 25px 0 0;overflow:hidden}
+.book-card .book-fields>label:first-child,.book-card .book-fields>.field{grid-column:1/-1}
+.book-card .dd-list{z-index:60;max-height:none}
+.book-card .dd-list li{white-space:normal}
+@media (max-width:560px){
+  .book-card .book-fields{grid-template-columns:minmax(0,1fr)}
+  .book-card .book-fields>label:first-child,.book-card .book-fields>.field{grid-column:auto}
+}
