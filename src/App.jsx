@@ -10,7 +10,7 @@ const PHONE = '+91 90325 10000'
 const TEL = 'tel:+919032510000'
 const WA = 'https://wa.me/919032510000?text=Hi%20MAX%20Hair%20Clinic%2C%20I%20want%20to%20book%20an%20appointment'
 const MAP = 'https://www.google.com/maps/search/?api=1&query=MAX+Hair+Clinic+Road+No+36+Jubilee+Hills+Hyderabad'
-const IMG = 'https://mymaxhair.com/wp-content/uploads/'
+const IMG = `${BASE}images/`
 
 const NAV = [
   ['options', 'Options'], ['journey', 'Journey'], ['compare', 'Compare'],
@@ -267,6 +267,32 @@ function BookingForm() {
       <small className="micro"><Icon d="M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4" size={14} /> 100% confidential. No obligation.</small>
       <ul className="book-trust"><li><Icon d={CHECK_D} size={13} /> NABH accredited</li><li><Icon d={CHECK_D} size={13} /> Surgeon-led</li><li><Icon d={CHECK_D} size={13} /> Free assessment call</li></ul>
     </form>
+  )
+}
+
+function FormPopup() {
+  const [show, setShow] = useState(false)
+  useEffect(() => {
+    const t = setTimeout(() => setShow(true), 3000)
+    return () => clearTimeout(t)
+  }, [])
+  const close = () => setShow(false)
+  useEffect(() => {
+    if (!show) return
+    const onKey = (e) => e.key === 'Escape' && close()
+    document.addEventListener('keydown', onKey)
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = prev }
+  }, [show])
+  if (!show) return null
+  return (
+    <div className="pop-bg" onMouseDown={(e) => e.target === e.currentTarget && close()}>
+      <div className="pop" role="dialog" aria-modal="true" aria-label="Book your hair transplant appointment">
+        <button type="button" className="pop-x" onClick={close} aria-label="Close">×</button>
+        <BookingForm />
+      </div>
+    </div>
   )
 }
 
@@ -552,6 +578,7 @@ function Landing() {
         </div>
       </footer>
 
+      <FormPopup />
       <a className="wa-float" href={WA} target="_blank" rel="noreferrer" aria-label="WhatsApp">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3.5A11.8 11.8 0 0 0 12 0 12 12 0 0 0 1.7 17.9L0 24l6.3-1.6A12 12 0 0 0 24 12a11.8 11.8 0 0 0-3.5-8.5zM12 21.9a9.9 9.9 0 0 1-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.9 9.9 0 1 1 12 21.9zm5.4-7.4c-.3-.1-1.8-.9-2-1s-.5-.1-.7.1-.8 1-1 1.2-.4.2-.7 0a8 8 0 0 1-4-3.5c-.3-.5.3-.5.9-1.6a.6.6 0 0 0 0-.5l-1-2.3c-.2-.6-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.9.4 3.7 3.7 0 0 0-1.1 2.7 6.4 6.4 0 0 0 1.3 3.4 14.7 14.7 0 0 0 5.6 4.9c2.1.9 2.9.9 3.4.8a2.9 2.9 0 0 0 1.9-1.3 2.4 2.4 0 0 0 .2-1.3c-.1-.1-.3-.2-.6-.3z" /></svg>
       </a>

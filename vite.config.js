@@ -4,5 +4,5 @@ import { defineConfig } from 'vite'
 // https://vite.dev/config/
 export default defineConfig(({ command }) => ({
   plugins: [react()],
-  base: command === 'build' ? '/Max-Hair-Clinic/' : '/',
+  base: process.env.SITE_BASE || (command === 'build' ? '/Max-Hair-Clinic/' : '/'),
 }))
